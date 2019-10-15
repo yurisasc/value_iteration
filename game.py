@@ -9,7 +9,7 @@
 from util import *
 import time, os
 import traceback
-  
+
 #######################
 # Parts worth reading #
 #######################
@@ -390,12 +390,20 @@ class GameStateData:
     """
     Allows two states to be compared.
     """
-    if other == None: return False
+    if other is None:
+      return False
     # TODO Check for type of other
-    if not self.agentStates == other.agentStates: return False
-    if not self.food == other.food: return False
-    if not self.capsules == other.capsules: return False
-    if not self.score == other.score: return False
+    if isinstance(other, str):
+      # handle terminal state
+      return False
+    if not self.agentStates == other.data.agentStates:
+      return False
+    if not self.food == other.data.food:
+      return False
+    if not self.capsules == other.data.capsules:
+      return False
+    if not self.score == other.data.score:
+      return False
     return True
 
   def __hash__( self ):
@@ -486,7 +494,7 @@ try:
   _BOINC_ENABLED = True
 except:
   _BOINC_ENABLED = False
-  
+
 class Game:
   """
   The Game manages the control flow, soliciting actions from agents.
