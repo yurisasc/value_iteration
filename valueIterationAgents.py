@@ -24,7 +24,7 @@ class ValueIterationAgent(ValueEstimationAgent):
       Your value iteration agent should take an mdp on
       construction, run the indicated number of iterations
       and then act according to the resulting policy.
-    
+
       Some useful mdp methods you will use:
           mdp.getStates()
           mdp.getPossibleActions(state)
@@ -35,15 +35,26 @@ class ValueIterationAgent(ValueEstimationAgent):
     self.discount = discount
     self.iterations = iterations
     self.values = util.Counter() # A Counter is a dict with default 0
-     
+
     "*** YOUR CODE HERE ***"
-    
+    for i in range(iterations):
+      temp_values = self.values.copy()
+
+      for state in mdp.getStates():
+        temp_actions = util.Counter()
+
+        for action in mdp.getPossibleActions(state):
+          for next_state, prob in mdp.getTransitionStatesAndProbs(state, action):
+            temp_actions[action] += prob * (mdp.getReward(state, action, next_state) +
+                                            (discount * temp_values[next_state]))
+
+        self.values[state] = temp_actions[temp_actions.argMax()]
+
   def getValue(self, state):
     """
       Return the value of the state (computed in __init__).
     """
     return self.values[state]
-
 
   def getQValue(self, state, action):
     """
@@ -54,7 +65,12 @@ class ValueIterationAgent(ValueEstimationAgent):
       to derive it on the fly.
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    q_value = self.values[state]
+
+    for next_state, prob in self.mdp.getTransitionStatesAndProbs(state, action):
+      q_value += self.discount * prob * self.values[next_state]
+
+    return q_value
 
   def getPolicy(self, state):
     """
@@ -65,9 +81,19 @@ class ValueIterationAgent(ValueEstimationAgent):
       terminal state, you should return None.
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    actions = util.Counter()
+
+    for act in self.mdp.getPossibleActions(state):
+      transition_states = self.mdp.getTransitionStatesAndProbs(state, act)
+
+      for trans_state, prob in transition_states:
+        actions[act] += prob * (self.mdp.getReward(state, act, trans_state) +
+                                self.discount * self.values[trans_state])
+
+    best_action = actions.argMax()
+
+    return best_action
 
   def getAction(self, state):
     "Returns the policy at the state (no exploration)."
     return self.getPolicy(state)
-  
