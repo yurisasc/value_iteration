@@ -1,4 +1,4 @@
-# Assignment 3: Gridworld & Pacman - Value Iteration and Q-Learning
+# Assignment 3: Value Iteration and Q-Learning
 
 ##### Work by:
 1. Yuris Aryansyah Shalichin Cakranegara
