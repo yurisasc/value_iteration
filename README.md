@@ -24,7 +24,7 @@ The default agent moves randomly. You should see the random agent bounce around 
 `python3 gridworld.py -g MazeGrid`
 
 
-Examples:
+##### Examples:
 
 Run the gridworld value iteration agent with 5 iterations
 
@@ -32,7 +32,7 @@ Run the gridworld value iteration agent with 5 iterations
 
 Run the gridworld value iteration agent with 100 iterations on a BrideGrid map with 0.9 discount value and 0.2 noise
 
-`python3 gridworld.py -a value -i 100 -g BridgeGrid -- discount 0.9 --noise 0.2`
+`python3 gridworld.py -a value -i 100 -g BridgeGrid --discount 0.9 --noise 0.2`
 
 Run the pacman agent with 2000 iterations and 2010 games on a specific map
 
